@@ -41,12 +41,69 @@ Screen.prototype.setup = function () {
 Screen.prototype.fillUpWithShit = function (data) {
 
   for (var i = 0; i < this.imgData.data.length; i++) {
-    let val = data[i] * 17
-    this.imgData.data[i * 4]     = val
-    this.imgData.data[i * 4 + 1] = val
-    this.imgData.data[i * 4 + 2] = val
+    this.imgData.data[i * 4]     = 0
+    this.imgData.data[i * 4 + 1] = 0
+    this.imgData.data[i * 4 + 2] = 0
     this.imgData.data[i * 4 + 3] = 255
   }
 
   this.ctx.putImageData(this.imgData, 0, 0);
 }
+
+
+
+
+Screen.prototype.setBuffer = function (data) {
+  this.data = data;
+
+  speeds = []
+  for (var i = 0; i < this.height; i++) {
+    speeds.push(this.data.getFollowing() || 1)
+  }
+  this.speeds = speeds
+}
+
+Screen.prototype.interval = function () {
+
+
+  for (var line = 0; line < this.height; line++) {
+    this.addPixelsToLine(this.speeds[line], line)
+  }
+
+  // for (var i = 0; i < this.imgData.data.length; i++) {
+  //   let val = this.data.getFollowing() * 17
+  //   this.imgData.data[i * 4]     = val
+  //   this.imgData.data[i * 4 + 1] = val
+  //   this.imgData.data[i * 4 + 2] = val
+  //   this.imgData.data[i * 4 + 3] = 255
+  // }
+
+  this.ctx.putImageData(this.imgData, 0, 0);
+
+  // window.requestAnimationFrame(this.interval.bind(this))
+  window.setTimeout(this.interval.bind(this), this.data.getFollowing() * 5 + 30)
+}
+
+
+Screen.prototype.addPixelsToLine = function (buffer, line) {
+
+  // Move pixels
+  var pixelsToMove = this.width - buffer,
+      lineStart = (this.width * line) * 4,
+      destStart = (this.width * line + buffer) * 4;
+  for (let i = pixelsToMove*4 - 1; i >= 0; i--) {
+    this.imgData.data[destStart+i] = this.imgData.data[lineStart+i]
+  }
+
+  // Add new ones
+  for (let i = 0; i < buffer; i++) {
+    let val = this.data.getFollowing() * 17
+
+    this.imgData.data[lineStart + (i * 4)]     = val
+    this.imgData.data[lineStart + (i * 4) + 1] = val
+    this.imgData.data[lineStart + (i * 4) + 2] = val
+    this.imgData.data[lineStart + (i * 4) + 3] = 255
+  }
+}
+
+

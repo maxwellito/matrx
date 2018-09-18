@@ -9,12 +9,19 @@
   <!-- Le scripts -->
   <script src="scripts/fileLoader.js"></script>
   <script src="scripts/screen.js"></script>
+  <script src="scripts/hexBuffer.js"></script>
   <script>
 
     var cc = new Screen()
     fileLoader.onDrop = function (data) {
       console.log('New file dropped', data)
-      cc.fillUpWithShit(data)
+      hBuffer = new HexBuffer(data);
+
+      cc.setBuffer(hBuffer);
+      cc.fillUpWithShit()
+      cc.interval()
+
+
     }
 
 
