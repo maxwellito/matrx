@@ -1,0 +1,56 @@
+/* Base */
+html, body, canvas {
+  margin: 0;
+  background: #000;
+  width: 100%;
+  image-rendering: pixelated;
+}
+
+/* Telepromptr */
+.telepromptr {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  color: #fff;
+  box-sizing: border-box;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.telepromptr span {
+  display: table;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+.telepromptr span:before {
+  content: "> ";
+}
+
+.telepromptr .input:after{
+  content: '_';
+  animation: blink 1s linear infinite;
+}
+
+.telepromptr .highlight {
+  color: #000;
+  background-color: #fff;
+}
+
+.telepromptr .note {
+  font-style: italic;
+}
+
+.telepromptr .error {
+  color: #f00;
+}
+
+
+@keyframes blink
+{
+	  0% { opacity: 1; }
+   50% { opacity: 1; }
+   51% { opacity: 0; }
+  100% { opacity: 0; }
+}
