@@ -3,7 +3,9 @@ html, body, canvas {
   margin: 0;
   background: #000;
   width: 100%;
+  image-rendering: -moz-crisp-edges;
   image-rendering: pixelated;
+  overflow: hidden;
 }
 
 /* Telepromptr */
