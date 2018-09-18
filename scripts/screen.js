@@ -65,6 +65,8 @@ Screen.prototype.setBuffer = function (data) {
 
 Screen.prototype.interval = function () {
 
+  this.oscillator.setHex(this.data.getFollowing())
+
 
   for (var line = 0; line < this.height; line++) {
     this.addPixelsToLine(this.speeds[line], line)
@@ -106,4 +108,7 @@ Screen.prototype.addPixelsToLine = function (buffer, line) {
   }
 }
 
-
+Screen.prototype.setOscillator = function (osci) {
+  this.oscillator = osci
+  this.oscillator.start()
+}
