@@ -3,7 +3,7 @@ class Ocsillator {
     this.context = new window.AudioContext();
 
     this.oscillator = this.context.createOscillator();
-    this.oscillator.type = 'sine';
+    this.oscillator.type = this.TYPES[0];
     this.oscillator.frequency.value = 440;
     this.oscillator.connect(this.context.destination);
 
@@ -25,10 +25,13 @@ class Ocsillator {
   }
 
   setHex(value) {
-    this.changeFrequency(this.NOTES[36 + 2 * value])
+    this.oscillator.type = this.TYPES[value % 4];
+    //this.changeFrequency(this.NOTES[36 + 2 * value])
   }
 
 }
+
+Ocsillator.prototype.TYPES = ['sine', 'square', 'sawtooth', 'triangle']
 
 Ocsillator.prototype.NOTES = [
   26,
