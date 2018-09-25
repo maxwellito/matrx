@@ -1,12 +1,19 @@
 class Screen {
   constructor(dotWidth, padding) {
+    // Screen size
     this.width = 32;
     this.height = 18
-    this.setup()
-  }
 
-  setupTemplate() {
-    this.el = dom.create('div')
+    // RGB filters
+    this.rLow  = 0
+    this.rHigh = 255
+    this.gLow  = 0
+    this.gHigh = 255
+    this.bLow  = 0
+    this.bHigh = 255
+
+    this.setup()
+    this.fillBlack()
   }
 
   setup() {
@@ -35,24 +42,30 @@ class Screen {
     document.body.appendChild(this.canvas)
   }
 
-  fillUpWithShit(data) {
-
+  fillBlack() {
     for (var i = 0; i < this.imgData.data.length; i++) {
       this.imgData.data[i * 4]     = 0
       this.imgData.data[i * 4 + 1] = 0
       this.imgData.data[i * 4 + 2] = 0
       this.imgData.data[i * 4 + 3] = 255
     }
-
     this.ctx.putImageData(this.imgData, 0, 0);
   }
 
 
-
-
+  // Methods
   setBuffer(data) {
     this.data = data;
+    this.shuffleSpeeds();
+  }
 
+
+  setOscillator(osci) {
+    this.oscillator = osci
+    this.oscillator.start()
+  }
+
+  shuffleSpeeds() {
     let speeds = []
     for (var i = 0; i < this.height; i++) {
       speeds.push(this.data.getFollowing() % 8)
@@ -60,23 +73,73 @@ class Screen {
     this.speeds = speeds
   }
 
+  // Da Loop
   interval() {
 
-    this.oscillator.setHex(this.data.getFollowing())
+    let next = this.data.doesNextIsMagic()
+    switch (next) {
+      // Black
+      // case 1:
+      //   this.rLow  = 0
+      //   this.gLow  = 0
+      //   this.bLow  = 0
+      //   break;
+      
+      // // White
+      // case 1:
+      //   this.rHigh = 255
+      //   this.gHigh = 255
+      //   this.bHigh = 255
+      //   break;
+      
+      case 2:
+        let f = this.data.getNext(3, false)//.map(x => (x > 7 ? 1 : 0))
+        
 
+          this.rHigh = 255
+          this.gHigh = 255
+          this.bHigh = 255
+        if (f[0] < 8) this.rLow = 0; else this.rLow = 255 | f[0]*16;
+        if (f[1] < 8) this.gLow = 0; else this.gLow = 255 | f[1]*16;
+        if (f[2] < 8) this.bLow = 0; else this.bLow = 255 | f[2]*16;
+        // if (f.reduce((acc, v) => (acc + (!!v)), 0) === 1) {
+        //   this.rHigh = f[0] ? 0 : this.rHigh
+        //   this.gHigh = f[1] ? 0 : this.gHigh
+        //   this.bHigh = f[2] ? 0 : this.bHigh
+        // }
+        // else {
+        //   this.rLow = f[0] ? this.rLow : 255
+        //   this.gLow = f[1] ? this.gLow : 255
+        //   this.bLow = f[2] ? this.bLow : 255          
+        // }
+        break;
+      default: 
+
+        this.rLow  = Math.floor(this.rLow/2)
+        this.gLow  = Math.floor(this.gLow/2)
+        this.bLow  = Math.floor(this.bLow/2)
+    }
+
+    if (next) {
+      this.oscillator.setHex(this.data.getFollowing())
+      this.shuffleSpeeds()
+
+      console.log(
+        next,
+        this.rLow ,
+        this.rHigh,
+        this.gLow ,
+        this.gHigh,
+        this.bLow ,
+        this.bHigh
+      )
+    }
+
+    
 
     for (var line = 0; line < this.height; line++) {
       this.addPixelsToLine(this.speeds[line], line)
     }
-
-    // for (var i = 0; i < this.imgData.data.length; i++) {
-    //   let val = this.data.getFollowing() * 17
-    //   this.imgData.data[i * 4]     = val
-    //   this.imgData.data[i * 4 + 1] = val
-    //   this.imgData.data[i * 4 + 2] = val
-    //   this.imgData.data[i * 4 + 3] = 255
-    // }
-
     this.ctx.putImageData(this.imgData, 0, 0);
 
     // window.requestAnimationFrame(this.interval.bind(this))
@@ -100,15 +163,13 @@ class Screen {
     for (let i = 0; i < buffer; i++) {
       let val = this.data.getFollowing() * 17
 
-      this.imgData.data[lineStart + (i * 4)]     = val
-      this.imgData.data[lineStart + (i * 4) + 1] = val
-      this.imgData.data[lineStart + (i * 4) + 2] = val
-      this.imgData.data[lineStart + (i * 4) + 3] = 255
+      this.imgData.data[lineStart + (i * 4)]     = this.rLow | val & this.rHigh
+      this.imgData.data[lineStart + (i * 4) + 1] = this.gLow | val & this.gHigh
+      this.imgData.data[lineStart + (i * 4) + 2] = this.bLow | val & this.bHigh
+      // this.imgData.data[lineStart + (i * 4) + 3] = 255
     }
   }
 
-  setOscillator(osci) {
-    this.oscillator = osci
-    this.oscillator.start()
-  }
+
+
 }

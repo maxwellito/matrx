@@ -32,10 +32,10 @@ class HexBuffer {
     let isBlack = true;
 
     for (let i = 0; i < 3; i++) {
-      if (color[i] === 0) {
+      if (color[i] < 4) {
         isWhite = false;
       }
-      else if (color[i] === 15) {
+      else if (color[i] > 11) {
         isBlack = false;
       }
       else {
