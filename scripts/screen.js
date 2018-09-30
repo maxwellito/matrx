@@ -2,7 +2,7 @@ class Screen {
   constructor(dotWidth, padding) {
     // Screen size
     this.width = 32;
-    this.height = 18
+    this.height = 18;
 
     // RGB filters
     this.rLow  = 0
@@ -68,7 +68,10 @@ class Screen {
   shuffleSpeeds() {
     let speeds = []
     for (var i = 0; i < this.height; i++) {
-      speeds.push(this.data.getFollowing() % 8)
+      let x = this.data.getFollowing() % 4
+      x = x > 1 ? x+6 : x
+      speeds.push(x)
+      //speeds.push(this.data.getFollowing() % 8)
     }
     this.speeds = speeds
   }
@@ -99,9 +102,38 @@ class Screen {
           this.rHigh = 255
           this.gHigh = 255
           this.bHigh = 255
-        if (f[0] < 8) this.rLow = 0; else this.rLow = 255 | f[0]*16;
-        if (f[1] < 8) this.gLow = 0; else this.gLow = 255 | f[1]*16;
-        if (f[2] < 8) this.bLow = 0; else this.bLow = 255 | f[2]*16;
+
+
+        if (f[0] < 8) {
+          this.rLow = 0//f[0]*18;
+          this.rHigh = 127
+        }
+        else {
+          this.rLow = 127;
+          this.rHigh = 255//f[0]*16;
+        }
+
+        if (f[1] < 8) {
+          this.gLow = 0//f[1]*18;
+          this.gHigh = 127
+        }
+        else {
+          this.gLow = 127;
+          this.gHigh = 255//f[1]*16;
+        }
+
+        if (f[2] < 8) {
+          this.bLow = 0//f[2]*18;
+          this.bHigh = 127
+        }
+        else {
+          this.bLow = 127;
+          this.bHigh = 255//f[2]*16;
+        }
+
+        // if (f[1] < 8) this.gLow = 0; else this.gLow = f[1]*16;
+        // if (f[2] < 8) this.bLow = 0; else this.bLow = f[2]*16;
+        
         // if (f.reduce((acc, v) => (acc + (!!v)), 0) === 1) {
         //   this.rHigh = f[0] ? 0 : this.rHigh
         //   this.gHigh = f[1] ? 0 : this.gHigh
@@ -118,6 +150,10 @@ class Screen {
         this.rLow  = Math.floor(this.rLow/2)
         this.gLow  = Math.floor(this.gLow/2)
         this.bLow  = Math.floor(this.bLow/2)
+
+        this.rHigh  = Math.min(this.rHigh*2, 255)
+        this.gHigh  = Math.min(this.gHigh*2, 255)
+        this.bHigh  = Math.min(this.bHigh*2, 255)
     }
 
     if (next) {
