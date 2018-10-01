@@ -4,46 +4,38 @@
     <link rel="stylesheet" href="style.css"/>
   </head>
 
-  <body></body>
+  <body>
+    <div class="intro" id="intro">
+      <span class="title">matr:x</span>
+      <p>Drag and drop a file to start the stream.</p>
+      <p>Double tap to go fullscreen.</p>
+    </div>
+  </body>
 
   <!-- Le scripts -->
+  <script src="scripts/fullscreenHelper.js"></script>
   <script src="scripts/fileLoader.js"></script>
   <script src="scripts/screen.js"></script>
   <script src="scripts/hexBuffer.js"></script>
   <script src="scripts/oscillator.js"></script>
   <script>
 
-    var cc = new Screen()
+    var cc = new Screen(),
+        intro = document.getElementById('intro')
+        
     fileLoader.onDrop = function (data) {
+
+      intro.remove()
 
       console.log('New file dropped', data)
       hBuffer = new HexBuffer(data);
       osci = new Ocsillator()
 
-
       cc.setBuffer(hBuffer);
-      cc.setOscillator(osci)
-
-
+      cc.setOscillator(osci);
+      cc.start(1000);
     }
 
-
-    document.documentElement.addEventListener('dblclick', function () {
-      var docElm = document.documentElement;
-      
-      if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
-      }
-      else if (docElm.mozRequestFullScreen) {
-        docElm.mozRequestFullScreen();
-      }
-      else if (docElm.webkitRequestFullScreen) {
-        docElm.webkitRequestFullScreen();
-      }
-
-      setTimeout(function () {
-        cc.interval()
-      }, 10000)
-    })
+    document.documentElement.addEventListener('dblclick', fullscreenHelper.toggle)
   </script>
 </html>
