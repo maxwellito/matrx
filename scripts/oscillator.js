@@ -25,8 +25,11 @@ class Ocsillator {
   }
 
   setHex(value) {
-    //this.oscillator.type = this.TYPES[value % 4];
     this.changeFrequency(this.NOTES[36 + 2 * value])
+  }
+
+  setType(index) {
+    this.oscillator.type = this.TYPES[index];
   }
 
 }

@@ -15,6 +15,7 @@
 
     var cc = new Screen()
     fileLoader.onDrop = function (data) {
+
       console.log('New file dropped', data)
       hBuffer = new HexBuffer(data);
       osci = new Ocsillator()
@@ -22,7 +23,6 @@
 
       cc.setBuffer(hBuffer);
       cc.setOscillator(osci)
-      cc.interval()
 
 
     }
@@ -39,7 +39,11 @@
       }
       else if (docElm.webkitRequestFullScreen) {
         docElm.webkitRequestFullScreen();
-    }
+      }
+
+      setTimeout(function () {
+        cc.interval()
+      }, 10000)
     })
   </script>
 </html>
