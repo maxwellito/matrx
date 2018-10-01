@@ -2,10 +2,12 @@ class Screen {
   constructor(dotWidth, padding) {
     // Screen size
     this.width = 32;
-    this.height = 16;
+    this.height = 18;
+    this.intervalBinded = this.interval.bind(this)
 
     this.setup()
     this.fillBlack()
+
   }
 
   setup() {
@@ -68,6 +70,10 @@ class Screen {
     this.speeds = speeds
   }
 
+  start(delay = 0) {
+    setTimeout(this.intervalBinded, delay)
+  }
+
   // Da Loop
   interval() {
 
@@ -93,9 +99,9 @@ class Screen {
     this.ctx.putImageData(this.imgData, 0, 0);
 
     // Next call
-    // window.requestAnimationFrame(this.interval.bind(this))
-    // window.setTimeout(this.interval.bind(this), this.data.getFollowing() * 10 + 120)
-    window.setTimeout(this.interval.bind(this), this.data.getFollowing() * 5 + 30)
+    // window.requestAnimationFrame(this.intervalBinded)
+    // window.setTimeout(this.intervalBinded, this.data.getFollowing() * 10 + 120)
+    window.setTimeout(this.intervalBinded, this.data.getFollowing() * 5 + 30)
   }
 
 

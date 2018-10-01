@@ -3,10 +3,24 @@ html, body, canvas {
   margin: 0;
   background: #000;
   width: 100%;
+  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  color: #fff;
   image-rendering: -moz-crisp-edges;
   image-rendering: pixelated;
   overflow: hidden;
 }
+
+.intro  {
+  margin: 1em;
+}
+
+.title {
+  display: inline-block;
+  border: 2px solid currentColor;
+  padding: .5em;
+}
+
+
 
 /* Telepromptr */
 .telepromptr {
