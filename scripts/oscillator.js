@@ -1,6 +1,6 @@
 class Ocsillator {
   constructor() {
-    this.context = new window.AudioContext();
+    this.context = new (window.AudioContext || window.webkitAudioContext)();
 
     this.oscillator = this.context.createOscillator();
     this.oscillator.type = this.TYPES[0];
