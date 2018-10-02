@@ -49,6 +49,6 @@ class HexBuffer {
   }
 
   onEnd(listener) {
-    this.listeners.push(listeners)
+    this.listeners.push(listener)
   }
 }

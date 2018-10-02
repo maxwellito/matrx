@@ -10,6 +10,7 @@
       <p>Drag and drop a file to start the stream.</p>
       <p>Double tap to go fullscreen.</p>
     </div>
+    <span class="end" id="end">end of transmission</span>
   </body>
 
   <!-- Le scripts -->
@@ -21,15 +22,18 @@
   <script>
 
     var cc = new Screen(),
-        intro = document.getElementById('intro')
+        intro = document.getElementById('intro'),
+        end = document.getElementById('end')
         
     fileLoader.onDrop = function (data) {
 
-      intro.remove()
+      let hBuffer = new HexBuffer(data)
+          osci = new Ocsillator();
 
-      console.log('New file dropped', data)
-      hBuffer = new HexBuffer(data);
-      osci = new Ocsillator()
+      intro.remove()
+      hBuffer.onEnd(() => {
+        end.style.visibility = 'inherit'
+      })
 
       cc.setBuffer(hBuffer);
       cc.setOscillator(osci);
