@@ -1,13 +1,28 @@
 class Screen {
-  constructor(dotWidth, padding) {
-    // Screen size
-    this.width = 32;
-    this.height = 18;
-    this.intervalBinded = this.interval.bind(this)
 
+  constructor(screen) {
+    this.setSize(screen)
     this.setup()
     this.fillBlack()
 
+    this.intervalBinded = this.interval.bind(this)
+  }
+
+  setSize(screen) {
+    // Base
+    let width = 32,
+        height = 18,
+        screenRatio = screen.width / screen.height,
+        bestRatio = width / height;
+
+    if (bestRatio < screenRatio) {
+      this.width = width
+      this.height = Math.round(width * screen.height / screen.width)
+    }
+    else {
+      this.width = Math.round(height * screen.width / screen.height)
+      this.height = height
+    }
   }
 
   setup() {
