@@ -22,7 +22,7 @@
   <script src="scripts/oscillator.js"></script>
   <script>
 
-    var cc = new Screen(),
+    var myScreen = new Screen(window.screen),
         intro = document.getElementById('intro'),
         end = document.getElementById('end')
         
@@ -36,9 +36,9 @@
         end.style.visibility = 'inherit'
       })
 
-      cc.setBuffer(hBuffer);
-      cc.setOscillator(osci);
-      cc.start(1000);
+      myScreen.setBuffer(hBuffer);
+      myScreen.setOscillator(osci);
+      myScreen.start(1000);
     }
 
     document.documentElement.addEventListener('dblclick', fullscreenHelper.toggle)
